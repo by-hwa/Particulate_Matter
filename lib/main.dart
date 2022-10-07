@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/get_api.dart';
-
-
+//import 'package:myapp/get_api.dart';
+//import 'package:myapp/get_api2.dart';
+import 'package:myapp/get_api3.dart';
+import 'dart:convert';
 
 void main() {
   runApp(const MyApp());
@@ -18,43 +19,49 @@ class MyApp extends StatelessWidget {
           title: Text('실시간 미세먼지 현황',
           style: TextStyle(fontSize: 15, color: Colors.black87),),
           backgroundColor: Colors.white,
-
         ),
-        body: Align(
-          alignment: Alignment.topCenter ,
-          child: Container(
-            width: double.infinity, height: double.infinity,
-            // color: Colors.yellow,
-            margin: EdgeInsets.all(20),
-            padding: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.yellow,
-              border: Border.all(color: Colors.black)
-            )
-            child: Text("HI");,
-          ),
-        ),
-        bottomNavigationBar: BottomAppBar(
-        child: SizedBox(
-          height: 50,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly ,
-            children: [Icon(Icons.phone),
-            Icon(Icons.message),
-            Icon(Icons.contact_page)],
-          ),
-        )
-        ),
+        body: DisplayAirQuality()
       )
     );
   }
 }
 
-class  extends StatelessWidget {
-  const ({Key? key}) : super(key: key);
+class DisplayAirQuality extends StatefulWidget {
+  const DisplayAirQuality({Key? key}) : super(key: key);
+
+  @override
+  State<DisplayAirQuality> createState() => _DisplayAirQualityState();
+}
+
+class _DisplayAirQualityState extends State<DisplayAirQuality> {
+  late Future<List<Items>>futureAirquality;
+
+  @override
+  void initState(){
+    super.initState();
+    futureAirquality=fetchAirquality();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return FutureBuilder<List<Items>>(
+        future: futureAirquality,
+        builder: (context, snapshot){
+          if (snapshot.hasData){
+            return Column(
+              children: [...snapshot.data!.map((e)=>SizedBox(
+                width: double.infinity,
+                child: Card(
+                  elevation: 4,
+                  child: Text(e.pm10Value.toString()),
+                ),
+              ))],
+            );
+          }else if(snapshot.hasError){
+            return Text('에러발생 : ${snapshot.hasError} \n 발생에러 : ${snapshot.error}' );
+          }
+          return const CircularProgressIndicator();
+        });
   }
 }
+
