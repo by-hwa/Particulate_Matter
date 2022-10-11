@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 //import 'package:myapp/get_api.dart';
 //import 'package:myapp/get_api2.dart';
 import 'package:myapp/get_api3.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'dart:convert';
+import 'package:myapp/draw_linechart.dart';
 
 void main() {
+  Future<List<Items>> fa = fetchAirquality();
+  List<int?> pm10val = [];
+  fa.then((val) {val.map((e) => pm10val.add(int?.tryParse(e.pm10Value.toString())));});
+  print(pm10val);
   runApp(const MyApp());
 }
 
@@ -26,6 +32,9 @@ class MyApp extends StatelessWidget {
   }
 }
 
+
+
+
 class DisplayAirQuality extends StatefulWidget {
   const DisplayAirQuality({Key? key}) : super(key: key);
 
@@ -42,6 +51,7 @@ class _DisplayAirQualityState extends State<DisplayAirQuality> {
     futureAirquality=fetchAirquality();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Items>>(
@@ -49,13 +59,7 @@ class _DisplayAirQualityState extends State<DisplayAirQuality> {
         builder: (context, snapshot){
           if (snapshot.hasData){
             return Column(
-              children: [...snapshot.data!.map((e)=>SizedBox(
-                width: double.infinity,
-                child: Card(
-                  elevation: 4,
-                  child: Text(e.pm10Value.toString()),
-                ),
-              ))],
+              children: [Text("미세먼지 10"),LineChart1(),Text("미세먼지 20"),LineChart1()],
             );
           }else if(snapshot.hasError){
             return Text('에러발생 : ${snapshot.hasError} \n 발생에러 : ${snapshot.error}' );
@@ -65,3 +69,19 @@ class _DisplayAirQualityState extends State<DisplayAirQuality> {
   }
 }
 
+
+/*
+Column(
+              children: [...snapshot.data!.map((e)=>SizedBox(
+                width: double.infinity,
+                child: Card(
+                  elevation: 4,
+                  child: Text("${e.pm10Value}"),
+                ),
+              ))],
+            );
+
+ListView.builder(
+                itemCount: snapshot.data!.length,
+                itemBuilder: (contexts, index));
+ */
