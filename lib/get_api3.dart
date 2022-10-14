@@ -8,15 +8,18 @@ import 'package:http/http.dart' as http;
 
 String _ApiKey = "6RVOGGZcTp3G0jdog5E8DjFgsN3hd8p2nauoISfqMn9uJG+yvF4cKkdkDWKJONMQ9pqLGIHQoL3igJsqWTUyPQ==";
 String _ApiKey2 = "6RVOGGZcTp3G0jdog5E8DjFgsN3hd8p2nauoISfqMn9uJG%2ByvF4cKkdkDWKJONMQ9pqLGIHQoL3igJsqWTUyPQ%3D%3D";
+String station_name = "종로구";
 
 Uri uri = Uri.parse(
-    'http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty?sidoName=서울&pageNo=1&numOfRows=100&returnType=json&serviceKey=${_ApiKey2}&ver=1.1');
+    'http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty?stationName=${station_name}&dataTerm=month&pageNo=1&numOfRows=100&returnType=json&serviceKey=$_ApiKey2&ver=1.1');
+
 
 
 Future<List<Items>> fetchAirquality() async {
   final response = await http.get(uri);
+
   print(uri);
-  print('${jsonDecode(response.body)['response']['body']['items']}');
+  // print('${jsonDecode(response.body)['response']['body']['items']}');
   if (response.statusCode == 200) {
     return (jsonDecode(response.body)['response']['body']['items'] as List)
         .map((e) => Items.fromJson(e))
@@ -25,6 +28,9 @@ Future<List<Items>> fetchAirquality() async {
     throw Exception('Failed to load data');
   }
 }
+
+
+
 
 class Items {
   String? pm10Value24;
@@ -135,7 +141,6 @@ class Items {
     data['dataTime'] = this.dataTime;
     data['pm10Grade'] = this.pm10Grade;
     data['o3Value'] = this.o3Value;
-    print('dfdsfas'+data['pm10Value24']);
     return data;
   }
 }

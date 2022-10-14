@@ -1,17 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:myapp/main.dart';
 
 
 class _LineChart1State extends State<LineChart1> {
+  List<FlSpot> fllist = [];
   List<Color> gradientColors = [
     const Color(0xff23b6e6),
     const Color(0xff02d39a),
   ];
 
-  bool showAvg = false;
+  bool showAvg = false; // 초기상태 avg 표시 유무
+
+  void set_val(List<int>? val){
+    print('val data : $val');
+    for (int i = (val!.length - 31 >0) ? 0 : val!.length - 31;i<val!.length&& i<31;i++){
+      fllist.add(FlSpot(i.toDouble(), val[i].toDouble()));
+    }
+    print('set val print : $fllist');
+  }
 
   @override
   Widget build(BuildContext context) {
+    set_val(widget.val);
     return Stack(
       children: <Widget>[
         AspectRatio(
@@ -34,7 +45,7 @@ class _LineChart1State extends State<LineChart1> {
         SizedBox(
           width: 60,
           height: 34,
-          child: TextButton(
+          child: TextButton(// avg 버튼 부분
             onPressed: () {
               setState(() {
                 showAvg = !showAvg;
@@ -61,14 +72,17 @@ class _LineChart1State extends State<LineChart1> {
     );
     Widget text;
     switch (value.toInt()) { // 연도/월 별 정렬 value 는 x축의 값
-      case 2:
-        text = const Text('MAR', style: style);
+      case 0:
+        text = const Text('30days ago', style: style);
         break;
-      case 5:
-        text = const Text('JUN', style: style);
+      case 10:
+        text = const Text('20days ago', style: style);
         break;
-      case 8:
-        text = const Text('SEP', style: style);
+      case 20:
+        text = const Text('10days ago', style: style,);
+        break;
+      case 30:
+        text = const Text('Today', style: style);
         break;
       default:
         text = const Text('', style: style);
@@ -90,21 +104,32 @@ class _LineChart1State extends State<LineChart1> {
     );
     String text;
     switch (value.toInt()) {
-      case 1:
-        text = '10K';
+      case 0:
+        text = '0';
         break;
-      case 3:
-        text = '30k';
+      case 10:
+        text = '10';
         break;
-      case 5:
-        text = '50k';
+      case 20:
+        text = '20';
         break;
+      case 30:
+        text = '30';
+        break;
+      case 40:
+        text = '40';
+        break;
+      case 50:
+        text = '50';
+        break;
+
       default:
         return Container();
     }
 
     return Text(text, style: style, textAlign: TextAlign.left);
   }
+
 
   LineChartData mainData() {
     return LineChartData(
@@ -155,20 +180,12 @@ class _LineChart1State extends State<LineChart1> {
           show: true,
           border: Border.all(color: const Color(0xff37434d), width: 1)),
       minX: 0,
-      maxX: 11,
+      maxX: 31,
       minY: 0,
-      maxY: 6,
+      maxY: 50,
       lineBarsData: [
         LineChartBarData( // 차트
-          spots: const [
-            FlSpot(0, 7),
-            FlSpot(2, 0),
-            FlSpot(4.9, 5),
-            FlSpot(6.8, 3.1),
-            FlSpot(8, 4),
-            FlSpot(9.5, 3),
-            FlSpot(11, 4),
-          ],
+          spots: fllist,
           isCurved: true,
           gradient: LinearGradient(
             colors: gradientColors,
@@ -297,8 +314,9 @@ class _LineChart1State extends State<LineChart1> {
 }
 
 class LineChart1 extends StatefulWidget {
-  const LineChart1({Key? key}) : super(key: key);
-
+  final List<int>? val;
+  const LineChart1({Key? key, required this.val}) : super(key: key);
+  // , required this.val
   @override
   _LineChart1State createState() => _LineChart1State();
 }
