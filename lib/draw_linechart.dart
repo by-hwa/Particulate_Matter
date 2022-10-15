@@ -42,24 +42,24 @@ class _LineChart1State extends State<LineChart1> {
             ),
           ),
         ),
-        SizedBox(
-          width: 60,
-          height: 34,
-          child: TextButton(// avg 버튼 부분
-            onPressed: () {
-              setState(() {
-                showAvg = !showAvg;
-              });
-            },
-            child: Text(
-              'avg',
-              style: TextStyle(
-                  fontSize: 12,
-                  color:
-                  showAvg ? Colors.white.withOpacity(0.5) : Colors.white),
-            ),
-          ),
-        ),
+        // SizedBox( // avg 버튼 제거
+        //   width: 60,
+        //   height: 34,
+        //   child: TextButton(// avg 버튼 부분
+        //     onPressed: () {
+        //       setState(() {
+        //         showAvg = !showAvg;
+        //       });
+        //     },
+        //     child: Text(
+        //       'avg',
+        //       style: TextStyle(
+        //           fontSize: 12,
+        //           color:
+        //           showAvg ? Colors.white.withOpacity(0.5) : Colors.white),
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }
