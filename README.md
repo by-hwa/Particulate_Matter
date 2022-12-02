@@ -1,17 +1,8 @@
 # myapp
 
-A new Flutter project.
+대기질 api를 연결하여 현재위치의 미세먼지 농도를 차트와 인디케이터로 표시.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# flutter_myapp
+## Loading page /  Main page / Chart page
+><img width='20%' src="https://user-images.githubusercontent.com/102535447/205227629-d17f8d9d-5649-4573-aa11-ae09a43c3575.png">
+><img width='20%' src="https://user-images.githubusercontent.com/102535447/205227639-123332b3-7009-42ed-9a89-3b4d0981a19a.png">
+><img width='20%' src="https://user-images.githubusercontent.com/102535447/205227646-b7e5024d-877a-4725-b10f-8cb4e949a7e7.png">
